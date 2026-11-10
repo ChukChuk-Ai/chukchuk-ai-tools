@@ -1,0 +1,46 @@
+{
+ "format": 1,
+ "name": "ChukChuk AI shared tools",
+ "tools": [
+  {
+   "id": "chukchuk/document",
+   "name": "문서",
+   "description": "마크다운 글로 PDF·Word(docx)·PowerPoint(pptx) 보고서를 만들고, PDF 파일에서 글을 뽑는다.",
+   "language": "ko",
+   "license": "PolyForm-Noncommercial-1.0.0",
+   "requirements": [
+    "reportlab>=4,<6",
+    "python-docx>=1.1,<2",
+    "python-pptx>=1,<2",
+    "pypdf>=5,<8"
+   ],
+   "path": "document",
+   "sha256": "5f13bf3f7cf0ee03a1e2e83e2ca3a15c1b022c2d51f6a63da3745ca6be29f713"
+  },
+  {
+   "id": "chukchuk/mail_alert",
+   "name": "메일알림",
+   "description": "메일함(지메일 등 IMAP)을 읽기 전용으로 확인해, 아직 알리지 않은 새 메일을 보낸이·제목·요약 표로 알린다.",
+   "language": "ko",
+   "license": "PolyForm-Noncommercial-1.0.0",
+   "requirements": [],
+   "path": "mail_alert",
+   "sha256": "d4affffce2690390d277021936ce871dd72695029c2f9610a0da6aad186a77f6"
+  },
+  {
+   "id": "chukchuk/photo",
+   "name": "사진",
+   "description": "사진 폴더를 분석해 이야기책(HTML)·추억 영상·성장 영상을 만들고, 분석한 사진을 인물·장면·행동으로 찾는다.",
+   "language": "ko",
+   "license": "PolyForm-Noncommercial-1.0.0",
+   "requirements": [
+    "Pillow>=10,<14",
+    "imageio-ffmpeg>=0.5,<1",
+    "edge-tts>=7,<8",
+    "opencv-python-headless>=4.8,<5"
+   ],
+   "path": "photo",
+   "sha256": "860f501a0ac966aba271c7e7a214d2acd537862560ea242e55acda73477889a2"
+  }
+ ]
+}
