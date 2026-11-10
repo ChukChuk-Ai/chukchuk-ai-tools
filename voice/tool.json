@@ -1,0 +1,193 @@
+{
+  "format": 1,
+  "name": "음성",
+  "language": "ko",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "description": "말로 쓰고 듣기: 마이크를 켜면 말이 입력창(또는 앞에 있는 다른 창)에 받아써지고 \"지금 전송해줘\"로 보낸다. 캐릭터의 답을 소리로 읽고, 말하는 도중 \"그만\"이면 멈춘다. 대화모드(호출어 없이 이어 말하기), 외국어 회화 연습, 회의 녹음·정리(회의록)도 한다. 음성 일은 앱이 켜 둔 별도 프로세스(voice.py)가 하고, 이 도구의 빠른 실행은 마이크·모드·회의 명령을 전한다.",
+  "usage": "**음성(듣기·말하기)** — 앱과 떨어진 음성 프로세스(`shared_tools/voice/voice.py`)가 한다. 앱은 켜 있는 동안 이 프로세스를 띄워 두고 표준 입출력(JSON 한 줄씩)으로 주고받는다.\n- 마이크를 켜면(대화창의 마이크 버튼, \"마이크 켜줘\") 받아쓰기다. 말이 대화창 입력창에 모인다. 척척아이가 아닌 다른 창이 앞에 있으면 그 창의 입력칸에 바로 쳐진다(다른 창 받아쓰기).\n- 말 속의 \"지금 전송해줘\"(영어 \"send it now\")는 Enter 와 같다(그 말은 빼고 보낸다. 다른 창이면 그 창에 Enter). \"지금 교정해줘\"·\"지금 보정해줘\"(\"correct it now\")는 입력창 글을 작업 분야 '음성 교정' 모델로 고친다(다른 창의 글은 고치지 않는다).\n- \"마이크 꺼줘\"·\"대화모드 시작\"·\"회의 시작\"처럼 이 도구의 명령만 말하면 입력창에 모으지 않고 바로 한다.\n- 도구 설정 '말이 없으면 마이크 끄기'(기본 10분) 동안 말이 없으면 마이크를 끈다. 입력창에 글이 남아 있으면 교정만 하고 보내지 않는다.\n- 캐릭터 이름(환경설정 > 캐릭터의 대화명)은 받아쓰기가 잘 알아듣도록 미리 알려 주는 낱말로 쓴다.\n- 말로 시킨 요청의 답은 소리로 읽는다. 답 속에 `---` 줄이 있으면 그 아래는 읽지 않고 화면에만 보인다(표·링크·기호도 읽지 않는다).\n- 말하는 도중 \"그만\"·\"멈춰\"·\"잠깐\"(영어: \"stop\")이라고 하면 멈춘다. 말하는 도중 다른 말을 또렷하게 하면 멈추고 그 말을 받아쓴다(도구 설정 '끼어들기').\n- 받아쓰는 중인 글은 입력창에 흐린 글로 보인다.\n\n**대화모드·외국어 회화** — 대화창 위 모드 단추나 빠른 실행 말로 켠다. 모드 중에는 호출어 없이 말하고, 캐릭터(대화 엔진) 대신 작업 분야 '음성 대화'의 모델이 답한다(지침 `modes/dialogue.*.md`·`modes/language.*.md`). 대화창에 친 글도 그 모델에게 간다.\n- 대화모드: 받아쓴 말을 모아 '음성 교정' 모델로 고치고(도구 설정 '대화모드 말 교정'), 옆 사람·TV 소리면 보내지 않는다. 말이 끊기면 보낸다. 긴 내용은 화이트보드 카드로 간다.\n- 외국어 회화(영어·일본어·중국어·스페인어·프랑스어·독일어): 받아쓰기와 목소리를 그 언어로 바꾸고, 회화 상대가 먼저 인사한다. 답의 새 표현·고친 문장은 `data/mydata/language/` 노트에 남아 다음 회화의 복습에 쓰인다.\n- 끝: \"대화 끝\"·\"대화모드 끝\"·\"회화 끝\"·\"end conversation\" 이라고 말하거나 모드 단추에서 일반모드. 모델이 끝내려는 뜻을 알아들어도 끝난다.\n\n**회의 녹음·정리** — \"회의 시작\"(또는 모드 단추 > 회의)이면 기본 마이크 원음을 `data/mydata/meeting/YYYYMMDD-HHMM/` 에 1분 조각으로 녹음한다. 녹음 중에는 말로 부르기·답 읽기를 쉰다. \"회의 끝\"으로 마치고 \"회의 정리해줘\"라고 하면 뒤에서 받아쓰기 → 작업 분야 '회의 정리' 모델로 구간별 보정 → 요약해 보정본(`transcript_corrected.md`)·요약(`summary.md`)을 남기고 화이트보드에 요약 카드를 올린다. 원음은 이 PC 에만 두고 받아쓴 글만 모델에 보낸다. 실패하거나 \"회의 정리 취소\"로 멈춰도 끝난 단계는 남아 다시 요청하면 이어 한다. \"최근 회의록 보여줘\"는 마지막 요약 카드.\n\n**빠른 실행 말**: \"마이크 켜줘\"(받아쓰기) / \"회의 시작\" / \"회의 끝\" / \"회의 정리해줘\" / \"최근 회의록 보여줘\",  \"대화모드 시작\" / \"영어 회화 시작\" / \"대화모드 끝\",  \"마이크 켜줘\" / \"마이크 꺼줘\" (\"turn on the mic\" / \"turn off the mic\"). 캐릭터가 부를 때: {\"trigger\": \"assistant\", \"action\": \"mic_on|mic_off\"}.\n\n**처음 쓸 때 받는 것**(인터넷 필요, 한 번만): 받아쓰기 모델(faster-whisper, Hugging Face 기본 캐시에 저장) — 'auto'면 NVIDIA GPU 가 있으면 large-v3-turbo(약 1.6GB)와 미리보기용 small(약 470MB), 없으면 small(약 470MB). medium 은 약 1.5GB. 말 끝 판단 모델 Smart Turn v3(pipecat-ai/smart-turn-v3, BSD 2-Clause, 약 9MB, `data/tools/voice/models/smart-turn/`). 패키지 설치(도구 자기 환경 .venv)는 약 500MB.\n- GPU 로 받아쓰려면 CUDA 12 의 cuBLAS·cuDNN 9 가 있어야 한다(없으면 'auto'는 CPU 의 small 로 바꿔 쓰고 대화창에 알린다). 도구 환경에 `nvidia-cublas-cu12`, `nvidia-cudnn-cu12` 를 설치해도 된다.\n- 말하기: 'Edge 온라인 음성'(읽을 글이 마이크로소프트 서버로 간다)이 먼저, 안 되면 Windows 내장 음성. 목소리는 비워 두면 화면 언어에 맞춘다(한국어 ko-KR-SunHiNeural, 영어 en-US-AriaNeural).\n\n설정: 환경설정 > 도구 설정 > 음성(바꾸면 음성 프로세스를 다시 띄울 때 적용). 고급 값은 `shared_tools/voice/defaults.toml`. 기록: `data/logs/voice.log`. 시험: `shared_tools\\voice\\.venv\\Scripts\\python.exe -m pytest shared_tools\\voice\\tests -q`.\n- \"음성 GPU 준비해줘\": NVIDIA GPU 가 있으면 GPU 받아쓰기에 필요한 CUDA 12 라이브러리(cuBLAS·cuDNN, 약 2GB)를 이 도구 환경에 뒤 작업으로 설치한다(몇 분, 끝나면 카드). 그 뒤 받아쓰기 모델 '자동'이 large-v3-turbo 를 GPU 로 쓴다. GPU 가 없는 PC 에 깔지 않으려고 기본 설치에는 넣지 않았다",
+  "status": "confirmed",
+  "process": "voice.py",
+  "inputs": {
+    "action": {
+      "type": "text",
+      "desc": "mic_on · mic_off · gpu_setup(NVIDIA GPU 받아쓰기 라이브러리 설치) · dialogue(대화모드) · language(외국어 회화, lang 과 함께) · general(모드 끝) · meeting_start · meeting_stop · meeting_process · meeting_cancel · meeting_show(최근 회의록)"
+    },
+    "lang": {
+      "type": "text",
+      "desc": "외국어 회화 언어: 영어·일본어·중국어·스페인어·프랑스어·독일어(en·ja·zh·es·fr·de)"
+    }
+  },
+  "settings": {
+    "stt_model": {
+      "type": "choice",
+      "label": "받아쓰기 모델",
+      "desc": "auto: NVIDIA GPU 가 있으면 large-v3-turbo, 없으면 small(CPU). 큰 모델일수록 정확하지만 느리고 처음에 받는 파일이 크다",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "자동(GPU 면 large-v3-turbo, 아니면 small)"
+        },
+        {
+          "value": "large-v3-turbo",
+          "label": "large-v3-turbo(약 1.6GB, GPU 권장)"
+        },
+        {
+          "value": "medium",
+          "label": "medium(약 1.5GB)"
+        },
+        {
+          "value": "small",
+          "label": "small(약 470MB, CPU 에서도 빠름)"
+        }
+      ]
+    },
+    "mic_always_on": {
+      "type": "boolean",
+      "label": "앱을 켤 때 마이크도 켜기",
+      "desc": "켜면 앱이 시작될 때 마이크를 켠다(받아쓰기). '말이 없으면 마이크 끄기'가 0 이 아니면 그 시간이 지나 꺼진다",
+      "default": false
+    },
+    "tts_engines": {
+      "type": "choice",
+      "label": "말하기 엔진",
+      "desc": "Edge 온라인 음성은 자연스럽지만 읽을 글이 마이크로소프트 서버로 간다. 안 되면 Windows 내장 음성으로 읽는다",
+      "default": "edge,windows",
+      "options": [
+        {
+          "value": "edge,windows",
+          "label": "Edge 온라인 음성 → Windows 내장 음성"
+        },
+        {
+          "value": "windows",
+          "label": "Windows 내장 음성만(글이 밖으로 나가지 않음)"
+        }
+      ]
+    },
+    "edge_voice": {
+      "type": "text",
+      "label": "Edge 목소리",
+      "desc": "예: ko-KR-SunHiNeural, ko-KR-InJoonNeural, en-US-AriaNeural. 비우면 화면 언어의 기본 목소리",
+      "default": ""
+    },
+    "windows_voice": {
+      "type": "text",
+      "label": "Windows 내장 목소리",
+      "desc": "Windows 설정 > 음성에 설치된 목소리 이름(예: Microsoft Heami Desktop). 비우면 화면 언어의 첫 목소리",
+      "default": ""
+    },
+    "barge_in": {
+      "type": "boolean",
+      "label": "끼어들기",
+      "desc": "말하는 도중 \"그만\"·\"멈춰\"나 또렷한 목소리가 들리면 말을 멈추고 듣는다. 스피커 소리 때문에 저절로 멈추면 끈다",
+      "default": true
+    },
+    "dictate_idle": {
+      "type": "integer",
+      "label": "말이 없으면 마이크 끄기(분)",
+      "desc": "받아쓰기 중 이 시간 동안 말이 없으면 마이크를 끈다(입력창에 글이 있으면 교정만 하고 보내지 않는다). 0 이면 끄지 않는다",
+      "default": 10,
+      "min": 0,
+      "max": 240
+    },
+    "dialogue_correction": {
+      "type": "boolean",
+      "label": "대화모드 말 교정",
+      "desc": "대화모드에서 받아쓴 말을 작업 분야 '음성 교정'의 모델로 문맥에 맞게 고치고, 옆 사람에게 한 말·TV 소리는 거른 뒤 보낸다. 끄면 받아쓴 그대로 바로 보낸다(더 빠르다)",
+      "default": true
+    }
+  },
+  "settings_page": true,
+  "synonyms": [
+    "마이크 켜줘",
+    "마이크 켜",
+    "마이크 켜 줘",
+    "마이크 켜기",
+    "마이크 꺼줘",
+    "마이크 꺼",
+    "마이크 꺼 줘",
+    "마이크 끄기",
+    "turn on the mic",
+    "turn on mic",
+    "turn on the microphone",
+    "mic on",
+    "turn off the mic",
+    "turn off mic",
+    "turn off the microphone",
+    "mic off",
+    "음성 GPU 준비해줘",
+    "음성 GPU 준비",
+    "GPU 받아쓰기 준비해줘",
+    "음성 GPU 설치해줘",
+    "prepare voice GPU",
+    "set up voice GPU",
+    "대화모드 시작",
+    "대화모드 시작해줘",
+    "대화모드 켜줘",
+    "대화모드로 바꿔줘",
+    "대화모드로 전환",
+    "start dialogue mode",
+    "dialogue mode",
+    "대화모드 끝",
+    "대화모드 종료",
+    "회화 끝",
+    "회화 종료",
+    "회화 그만",
+    "일반모드로 바꿔줘",
+    "일반모드로 전환",
+    "end dialogue mode",
+    "end conversation",
+    "normal mode",
+    "switch to normal mode",
+    "회의 시작",
+    "회의 녹음 시작",
+    "녹음 시작",
+    "start meeting",
+    "회의 끝",
+    "회의 녹음 끝",
+    "녹음 끝",
+    "end meeting",
+    "회의 정리해줘",
+    "회의내용 정리해줘",
+    "회의록 만들어줘",
+    "summarize the meeting",
+    "회의 정리 취소",
+    "최근 회의록 보여줘",
+    "회의록 보여줘",
+    "show meeting minutes"
+  ],
+  "commands": [
+    "마이크 켜줘",
+    "마이크 꺼줘",
+    "음성 GPU 준비해줘",
+    "대화모드 시작",
+    "영어 회화 시작",
+    "대화모드 끝",
+    "회의 시작",
+    "회의 끝",
+    "회의 정리해줘",
+    "최근 회의록 보여줘"
+  ],
+  "requirements": [
+    "faster-whisper>=1.1,<2",
+    "numpy>=1.26,<3",
+    "sounddevice>=0.5,<1",
+    "av>=11,<21",
+    "onnxruntime>=1.17,<2",
+    "edge-tts>=7,<8",
+    "pycaw>=20240316; sys_platform == \"win32\"",
+    "comtypes>=1.4,<2; sys_platform == \"win32\""
+  ],
+  "timeout": 30,
+  "patterns": [
+    "{lang} 회화 시작",
+    "{lang} 회화 시작해줘",
+    "{lang} 회화 하자",
+    "{lang} 회화 해줘",
+    "{lang} 회화 연습",
+    "start {lang} conversation",
+    "start {lang} practice",
+    "{lang} conversation practice",
+    "practice {lang}"
+  ]
+}

@@ -3,6 +3,16 @@
  "name": "ChukChuk AI shared tools",
  "tools": [
   {
+   "id": "chukchuk/briefing",
+   "name": "브리핑",
+   "description": "지난 브리핑 뒤 안 읽은 새 메일, 설정한 곳의 오늘 날씨·옷차림, 오늘·내일 할 일을 한 장의 카드로 모아 보여 준다.",
+   "language": "ko",
+   "license": "PolyForm-Noncommercial-1.0.0",
+   "requirements": [],
+   "path": "briefing",
+   "sha256": "8a6e3a74a90d5bbddd7b7b0bde6ba03c0aa53c85e3185599048f68e95abf3375"
+  },
+  {
    "id": "chukchuk/document",
    "name": "문서",
    "description": "마크다운 글로 PDF·Word(docx)·PowerPoint(pptx) 보고서를 만들고, PDF 파일에서 글을 뽑는다.",
@@ -30,7 +40,7 @@
   {
    "id": "chukchuk/photo",
    "name": "사진",
-   "description": "사진 폴더를 분석해 이야기책(HTML)·추억 영상·성장 영상을 만들고, 분석한 사진을 인물·장면·행동으로 찾는다.",
+   "description": "사진 폴더를 분석해 이야기책(HTML)·추억 영상·성장 영상을 만들고, 분석한 사진을 인물·장면·행동으로 찾는다. 이야기책 사진 중 오늘과 같은 날 찍은 사진을 '오늘의 추억'으로 보여 준다.",
    "language": "ko",
    "license": "PolyForm-Noncommercial-1.0.0",
    "requirements": [
@@ -40,7 +50,36 @@
     "opencv-python-headless>=4.8,<5"
    ],
    "path": "photo",
-   "sha256": "860f501a0ac966aba271c7e7a214d2acd537862560ea242e55acda73477889a2"
+   "sha256": "4d42a5bacf54f5f259971e0374a8368a456b0c3816207291db2d4d95e29e3618"
+  },
+  {
+   "id": "chukchuk/voice",
+   "name": "음성",
+   "description": "말로 쓰고 듣기: 마이크를 켜면 말이 입력창(또는 앞에 있는 다른 창)에 받아써지고 \"지금 전송해줘\"로 보낸다. 캐릭터의 답을 소리로 읽고, 말하는 도중 \"그만\"이면 멈춘다. 대화모드(호출어 없이 이어 말하기), 외국어 회화 연습, 회의 녹음·정리(회의록)도 한다. 음성 일은 앱이 켜 둔 별도 프로세스(voice.py)가 하고, 이 도구의 빠른 실행은 마이크·모드·회의 명령을 전한다.",
+   "language": "ko",
+   "license": "PolyForm-Noncommercial-1.0.0",
+   "requirements": [
+    "faster-whisper>=1.1,<2",
+    "numpy>=1.26,<3",
+    "sounddevice>=0.5,<1",
+    "av>=11,<21",
+    "onnxruntime>=1.17,<2",
+    "edge-tts>=7,<8",
+    "pycaw>=20240316; sys_platform == \"win32\"",
+    "comtypes>=1.4,<2; sys_platform == \"win32\""
+   ],
+   "path": "voice",
+   "sha256": "6669f25694732435f23f056656906ee485c16bd6edf4fbff2eba43db0efbcfb8"
+  },
+  {
+   "id": "chukchuk/walk",
+   "name": "걷기",
+   "description": "걷기 타이머를 켜고, 다녀와서 알려 준 걸음 수로 운동 시간·추정 거리·평균 속도·소모 칼로리를 계산해 기록한다.",
+   "language": "ko",
+   "license": "PolyForm-Noncommercial-1.0.0",
+   "requirements": [],
+   "path": "walk",
+   "sha256": "bafcacd327ac7cc641a6be76d50666b7e2172317b2103a7753c1fa2ef008d65c"
   }
  ]
 }

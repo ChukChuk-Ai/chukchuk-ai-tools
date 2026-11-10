@@ -96,6 +96,14 @@ start_head = "| 폴더 | 사진 수 | 예상 소요 시간 | 상태 |\n|---|---|
 start_row = "| {name} | {n}장 | 약 {lo}~{hi}분 | 백그라운드 분석 시작 |"
 start_footer = "\n작업이 뒤에서 진행되는 동안 계속 대화하실 수 있습니다.\n진행 상태를 확인하려면 \"사진 작업 어디까지 됐어\"라고 말씀해 주세요."
 
+# memory.py: 오늘의 추억
+memory_title = "# 오늘의 추억: {folder}{when}"
+memory_years_ago = " ({date}, {years}년 전 오늘)"
+memory_date = " ({date})"
+memory_default_summary = "옛 사진 속 한 장면입니다."
+memory_links = "[바로보기] {html}, [원본] {photo}"
+memory_none = "# 오늘의 추억\n\n> 아직 만든 이야기책이 없습니다. \"○○ 사진 이야기책 만들어줘\"라고 하면 그 사진들에서 골라 보여 드립니다.\n"
+
 # run.py: 추억 영상·성장 영상 시작
 video_no_story = "# 추억 영상 시작 못 함\n\n[사진] '{name}'은 아직 이야기책이 없습니다. 먼저 \"{name} 사진 이야기책 만들어줘\"라고 해 주세요."
 video_no_analysis = "분석된 폴더가 없습니다: {query}. 먼저 \"{name} 사진 이야기책 만들어줘\"라고 해 주세요."
@@ -303,6 +311,14 @@ start_line = "[Photos] [{path}] Analyzing {n} photos · estimated time: about {l
 start_head = "| Folder | Photos | Estimated time | Status |\n|---|---|---|---|"
 start_row = "| {name} | {n} | about {lo}–{hi} min | analysis started in the background |"
 start_footer = "\nYou can keep chatting while it runs in the background.\nSay \"how is the photo job going\" to check progress."
+
+# memory.py: today's memory
+memory_title = "# Today's memory: {folder}{when}"
+memory_years_ago = " ({date}, {years} year(s) ago today)"
+memory_date = " ({date})"
+memory_default_summary = "A moment from an old photo."
+memory_links = "[View] {html}, [Original] {photo}"
+memory_none = "# Today's memory\n\n> No storybooks yet. Say \"make a photo storybook of ...\" and I will pick photos from it.\n"
 
 # run.py: starting memory and growth videos
 video_no_story = "# Could not start the memory video\n\n[Photos] '{name}' has no storybook yet. First say \"make a photo storybook of {name}\"."

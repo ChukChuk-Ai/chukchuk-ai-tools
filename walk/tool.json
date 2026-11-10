@@ -1,0 +1,100 @@
+{
+  "format": 1,
+  "name": "걷기",
+  "language": "ko",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "description": "걷기 타이머를 켜고, 다녀와서 알려 준 걸음 수로 운동 시간·추정 거리·평균 속도·소모 칼로리를 계산해 기록한다.",
+  "usage": "- \"걷기 시작\", \"저녁 걷기 시작\", \"산책 시작\": 타이머 시작(이미 켜져 있으면 경과 시간). \"걷기 다시 시작\": 처음부터 다시\n- \"걷기 다녀왔어\", \"산책 다녀왔어\": 도착 시각을 먼저 고정하고 걸음 수를 기다린다\n- \"걷기 끝 7500보\", \"7500보 걸었어\", \"7,500걸음 걸었어\": 끝내고 결과 카드(운동 시간·걸음 수·분당 걸음·추정 거리·평균 속도·소모 칼로리). 거리는 걸음 수 × 보폭, 칼로리는 속도별 METs 와 걸음 수로 어림한 값이다\n- \"걷기 현황\": 경과 시간. \"걷기 기록 보여줘\": 최근 10건. \"걷기 취소\": 진행 중인 타이머 취소\n- 체중·보폭은 환경설정 > 도구 설정 > 걷기. 기록은 data/mydata/walk/walk.csv(엑셀로 열림, 번호 W-1, W-2 …)\n- 캐릭터가 부를 때(표준 값): {\"trigger\": \"assistant\", \"action\": \"start|arrive|finish|status|history|cancel\", \"steps\": 7500, \"start_time\": \"YYYY-MM-DDTHH:MM\", \"end_time\": \"...\", \"restart\": true}. 시작·끝 시각을 지난 시각으로 줄 수 있다(\"30분 전에 출발했어\" → start_time)",
+  "status": "confirmed",
+  "inputs": {
+    "action": {
+      "type": "text",
+      "desc": "start · arrive · finish · status · history · cancel. 없으면 말에서 알아듣는다"
+    },
+    "steps": {
+      "type": "integer",
+      "desc": "finish: 걸음 수"
+    },
+    "start_time": {
+      "type": "datetime",
+      "desc": "start: 시작 시각(없으면 지금)"
+    },
+    "end_time": {
+      "type": "datetime",
+      "desc": "arrive·finish: 끝난 시각(없으면 지금 또는 도착 때 고정한 시각)"
+    },
+    "restart": {
+      "type": "boolean",
+      "desc": "start: 켜져 있어도 처음부터 다시"
+    },
+    "weight_kg": {
+      "type": "number",
+      "desc": "(선택) 이번만 쓸 체중"
+    },
+    "stride_m": {
+      "type": "number",
+      "desc": "(선택) 이번만 쓸 보폭(m)"
+    }
+  },
+  "settings": {
+    "weight_kg": {
+      "type": "integer",
+      "label": "체중(kg)",
+      "default": 70,
+      "min": 20,
+      "max": 250,
+      "desc": "소모 칼로리 계산에 쓴다"
+    },
+    "stride_cm": {
+      "type": "integer",
+      "label": "보폭(cm)",
+      "default": 70,
+      "min": 30,
+      "max": 150,
+      "desc": "걸음 수 × 보폭 = 추정 거리. 키(cm) × 0.41 정도가 보통이다"
+    }
+  },
+  "synonyms": [
+    "걷기 시작",
+    "걷기 시작해줘",
+    "걷기 타이머 시작",
+    "저녁 걷기 시작",
+    "아침 걷기 시작",
+    "산책 시작",
+    "산책 타이머 시작",
+    "걷기 다시 시작",
+    "걷기 다녀왔어",
+    "걷기하고 돌아왔어",
+    "산책 다녀왔어",
+    "걷기 현황",
+    "걷기 현황 보여줘",
+    "걷기 상태",
+    "걷기 경과 시간",
+    "걷기 기록",
+    "걷기 기록 보여줘",
+    "걷기 내역 보여줘",
+    "걷기 취소",
+    "걷기 타이머 취소"
+  ],
+  "patterns": [
+    "걷기 끝 {steps}",
+    "걷기 끝 {steps}보",
+    "걷기 끝 {steps}걸음",
+    "{steps}보 걸었어",
+    "{steps}걸음 걸었어",
+    "대략 {steps}보 걸었어",
+    "약 {steps}보 걸었어",
+    "오늘 {steps}보 걸었어",
+    "걷기 {steps}보",
+    "걷기 {steps}걸음"
+  ],
+  "commands": [
+    "걷기 시작",
+    "걷기 다녀왔어",
+    "걷기 끝 {걸음 수}보",
+    "걷기 현황",
+    "걷기 기록 보여줘",
+    "걷기 취소"
+  ],
+  "timeout": 60
+}

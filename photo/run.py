@@ -825,6 +825,15 @@ def handle_growth(person: str) -> None:
     print(T("growth_start", folders=' · '.join(folders), n=len(photos), name=person))
 
 
+def handle_memory(trigger: str) -> None:
+    """'오늘의 추억 보여줘'·자동 실행: 이야기책 사진 한 장 카드(memory.py). 자동 실행은 때가 아니면 아무것도 내지 않는다."""
+    import memory
+    card = memory.show(trigger)
+    if card:
+        sys.stdout.buffer.write(card.encode("utf-8"))
+        sys.stdout.flush()
+
+
 def main() -> None:
     if len(sys.argv) < 2:
         handle_status()
@@ -843,6 +852,13 @@ def main() -> None:
 
     if raw_arg in ("status", "상태"):
         action = "status"
+    elif raw_arg.startswith("{") and '"schedule"' in raw_arg:   # 자동 실행(매시 정각)은 오늘의 추억만
+        try:
+            if json.loads(raw_arg).get("trigger") == "schedule":
+                handle_memory("schedule")
+                return
+        except ValueError:
+            pass
     else:
         try:
             parsed = json.loads(raw_arg)
@@ -867,6 +883,8 @@ def main() -> None:
                         action = "growth"
                     elif "영상" in text or "video" in low:
                         action = "video"
+                    elif "오늘의 추억" in text or "오늘의추억" in text or "추억 사진" in text or "memor" in low:
+                        action = "memory"
                     elif (query or "사진 찾아" in text or "사진 찾기" in text or "나온 사진" in text
                           or ("find" in low and ("photo" in low or "picture" in low))):
                         action = "search"
@@ -923,6 +941,8 @@ def main() -> None:
         handle_growth(name or folder)
     elif action == "video_list":
         handle_video_list()
+    elif action == "memory":
+        handle_memory("quick")
     elif action == "list":
         handle_list()
     elif action == "story":
