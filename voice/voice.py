@@ -1,6 +1,7 @@
 """음성 프로세스(도구 '음성'). 앱이 켜 있는 동안 따로 돈다(tool.json 의 "process"). 앱과는 표준 입출력 JSON 한 줄씩 주고받는다.
 
 앱 → 음성: {"mic": true|false}  {"say": 글, "voice": "chat|command"}  {"stop": true}
+           {"silent": true|false}(음성 안내 계속 끔/다시 켬: 끈 동안은 말할 글이 와도 소리 내지 않는다)
            {"names": ["캐릭터 대화명", ...]}  {"mode": "general|dialogue|language", "lang": "en|ja|zh|es|fr|de"}
            {"ask": 글}(모드 중 대화창에 친 말)  {"meeting": "start|stop|process|cancel"}  {"quit": true}
 음성 → 앱: {"state": "loading|off|called|hearing|speaking|meeting|error", "detail": 글}  {"partial": 글}
@@ -211,6 +212,7 @@ class Voice:
         self._utterances: queue.Queue = queue.Queue()
         self._speech: queue.Queue = queue.Queue()
         self._speaking = threading.Event()
+        self.silent = False   # 음성 안내 계속 끔(앱의 말 멈추기 버튼 셋째 상태)
         self._state = None
         self._last_partial = ""
         self._partial_text, self._partial_at = "", 0.0   # 입력창에 보이는 받아쓴 글과 마지막으로 바뀐 때
@@ -397,6 +399,10 @@ class Voice:
             self._speech.put((str(cmd["say"]), str(cmd.get("voice") or "chat"), ""))
         if cmd.get("stop"):
             self.stop_speaking()
+        if "silent" in cmd:
+            self.silent = bool(cmd["silent"])
+            if self.silent:
+                self.stop_speaking()
         if "names" in cmd:
             names = cmd["names"] if isinstance(cmd["names"], list) else [cmd["names"]]
             self._names = tuple(str(n) for n in names if str(n).strip())   # 받아쓰기에 미리 알려 줄 낱말·대화 상대 이름
@@ -559,7 +565,7 @@ class Voice:
         while not self.stopping.is_set():
             said, _voice, lang = self._speech.get()   # lang: 외국어 회화의 답이면 그 언어 목소리로
             said = speech_text(said)
-            if not said or self._recording():   # 회의 녹음 중에는 말하지 않는다(녹음에 섞이지 않게)
+            if not said or self._recording() or self.silent:   # 회의 녹음 중(녹음에 섞이지 않게)·음성 안내를 끈 동안은 말하지 않는다
                 continue
             try:
                 self.speaker.tts = self._tts_for(lang)

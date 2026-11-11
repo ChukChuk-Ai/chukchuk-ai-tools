@@ -69,7 +69,7 @@
     "comtypes>=1.4,<2; sys_platform == \"win32\""
    ],
    "path": "voice",
-   "sha256": "6669f25694732435f23f056656906ee485c16bd6edf4fbff2eba43db0efbcfb8"
+   "sha256": "ef0ac9dd486102c26f4494aa3ade59547c13aa88736a588df633fa7395ffa5e3"
   },
   {
    "id": "chukchuk/walk",
